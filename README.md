@@ -1,7 +1,7 @@
 jwt-utils
 =========
 
-TDAF JSON Web Tokens (JWT) utils.
+JSON Web Tokens (JWT) utils.
 
 [![npm version](https://badge.fury.io/js/jwt-utils.svg)](http://badge.fury.io/js/jwt-utils)
 [![Build Status](https://travis-ci.org/telefonica/node-jwt-utils.svg)](https://travis-ci.org/telefonica/node-jwt-utils)
