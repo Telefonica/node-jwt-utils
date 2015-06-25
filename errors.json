@@ -1,0 +1,371 @@
+[
+  {
+    "errors": [
+      {
+        "type": "MISSING_REQUIRED_KID",
+        "fields": [
+          {
+            "key": "message",
+            "value": "Missing required kid.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTHEADER",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The JWT header does not have the kid field.",
+          "tags": []
+        }
+      },
+      {
+        "type": "ALGORITHM_NOT_SUPPORTED",
+        "fields": [
+          {
+            "key": "message",
+            "value": "Algorithm not supported.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTHEADER",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The JWT header has an algorithm not supported.",
+          "tags": []
+        }
+      },
+      {
+        "type": "INVALID_HEADER",
+        "fields": [
+          {
+            "key": "message",
+            "value": "Invalid header.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTHEADER",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The JWT cannot be decoded.",
+          "tags": []
+        }
+      },
+      {
+        "type": "MISSING_REQUIRED_HEADER",
+        "fields": [
+          {
+            "key": "message",
+            "value": "Missing required header.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTHEADER",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The header argument is null or undefined.",
+          "tags": []
+        }
+      },
+      {
+        "type": "MISSING_REQUIRED_KEY",
+        "fields": [
+          {
+            "key": "message",
+            "value": "Missing required key.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWT",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The key value is missing, and it is required.",
+          "tags": []
+        }
+      },
+      {
+        "type": "SEGMENTS_NUMBER_ERROR",
+        "fields": [
+          {
+            "key": "message",
+            "value": "Not enough or too many segments {1}.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWT",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The number of segments of the jwt are invalid.",
+          "tags": []
+        }
+      },
+      {
+        "type": "WRONG_TOKEN_SIGNATURE",
+        "fields": [
+          {
+            "key": "message",
+            "value": "Wrong token signature",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWT",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The hash key or the hash are invalid.",
+          "tags": []
+        }
+      },
+      {
+        "type": "INVALID_FOURTH_SEGMENT",
+        "fields": [
+          {
+            "key": "message",
+            "value": "The fourth segment must not be null.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWT",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The value of the fourth segment of an encrypted jwt is invalid.",
+          "tags": []
+        }
+      },
+      {
+        "type": "DECRYPTION_ERROR",
+        "fields": [
+          {
+            "key": "message",
+            "value": "JWT cannot be decrypted{1}",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWT",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "Error decrypting an jwt encrypted.",
+          "tags": []
+        }
+      },
+      {
+        "type": "ENCRYPTION_ERROR",
+        "fields": [
+          {
+            "key": "message",
+            "value": "Encryption error: {1}",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWT",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "Error when it tries to encrypt in order to generate a jwt encrypted.",
+          "tags": []
+        }
+      },
+      {
+        "type": "INVALID_IAT",
+        "fields": [
+          {
+            "key": "message",
+            "value": "JWT iat is not valid.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTPAYLOAD",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "Invalid iat value.",
+          "tags": []
+        }
+      },
+      {
+        "type": "INVALID_EXP",
+        "fields": [
+          {
+            "key": "message",
+            "value": "JWT exp is not valid.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTPAYLOAD",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "Invalid exp value.",
+          "tags": []
+        }
+      },
+      {
+        "type": "EMPTY_PAYLOAD",
+        "fields": [
+          {
+            "key": "message",
+            "value": "Empty payload",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTPAYLOAD",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The payload of the token is empty.",
+          "tags": []
+        }
+      },
+      {
+        "type": "EXPIRED_JWT",
+        "fields": [
+          {
+            "key": "message",
+            "value": "JWT has expired.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTPAYLOAD",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The jwt has expired taking into account the configured value.",
+          "tags": []
+        }
+      },
+      {
+        "type": "FUTURE_JWT",
+        "fields": [
+          {
+            "key": "message",
+            "value": "JWT belongs to the future.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTPAYLOAD",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "The jwt has an invalid date. Perhaps the machine clocks has some differences or you may suffering an attack.",
+          "tags": []
+        }
+      }
+    ],
+    "namespace": null,
+    "doc": {
+      "description": "JWT Utils errors.",
+      "tags": []
+    }
+  }
+]
