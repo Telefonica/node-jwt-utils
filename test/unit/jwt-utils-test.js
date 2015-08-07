@@ -665,6 +665,41 @@ describe('Jwt Utils Tests', function() {
     });
   });
 
+  it('should encrypt and decrypt with A256CBC-HS512 with utf8 characters in payload', function() {
+    var payload = {
+      status: 'ok',
+      testStr: 'áéíóúñçÇÁÉÍÓÚ'
+    };
+    var header = {
+      alg: 'dir',
+      enc: 'A256CBC-HS512',
+      corr: 'corr',
+      kid: 'kid'
+    };
+    var key = '796f75722d7365637265742d6b657923796f75722d7365637265742d6b657923';
+    jwtUtils.buildJWTEncrypted(payload, header, key, key, function(error, jwt) {
+      expect(jwt).to.exist;
+      var segments = jwt.split('.');
+      expect(segments[1]).to.be.equal('');
+      var authTagBuff = new Buffer(segments[4], 'base64');
+      expect(authTagBuff.length).to.be.equal(32);
+      expect(error).to.not.exist;
+      jwtUtils.readJWTEncrypted(jwt, key, key, function(err, token) {
+        expect(token).to.exist;
+        expect(token.header).to.exist;
+        expect(token.header.corr).to.be.equal('corr');
+        expect(token.header.kid).to.be.equal('kid');
+        expect(token.header.alg).to.be.equal('dir');
+        expect(token.header.enc).to.be.equal('A256CBC-HS512');
+        expect(token.payload).to.exist;
+        expect(token.payload.iat).to.exist;
+        expect(token.payload.status).to.be.equal('ok');
+        expect(token.payload.testStr).to.be.equal('áéíóúñçÇÁÉÍÓÚ');
+        expect(err).to.not.exist;
+      });
+    });
+  });
+
   it('should fail when it try to encrypt with an unknown hash algorithm', function() {
     var payload = {
       status: 'ok'
