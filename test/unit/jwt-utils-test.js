@@ -822,4 +822,26 @@ describe('Jwt Utils Tests', function() {
     });
   });
 
+  it('should fail when client expired the jwt without taking into account the exp field', function() {
+    var jwtToken = 'eyJraWQiOiJraWQiLCJhbGciOiJkaXIiLCJlbmMiOiJBMjU' +
+        '2Q0JDLUhTNTEyIiwiY29yciI6ImNvcnIifQ..Xuaus8N7yqmojQFFFNgxL' +
+        'g.UCM5odV53W9NEaVvee7fCKb31B1C7wedJn02vapNOf2v3-dmKDaZxt2G' +
+        'nIDYK-TQ-XkiziRkRtZkjABFRNHPYw.FFduxvzrjIhWu8dQ3MMOVH11-tE' +
+        'BgE6955c4M9EO3fk';
+
+    var hashKey = '796f75722d7365637265742d6b657923796f75722d7365637265742d6b657923';
+    var encKey = '796f75722d7365637265742d6b657923796f75722d7365637265742d6b657923';
+
+    var clock = sinon.useFakeTimers(0, 'Date');
+    clock.tick((1443688542000 + 1) * 1000);
+
+    var jwtUtilsMod = jwt({expiration: 1});
+
+    jwtUtilsMod.readJWTEncrypted(jwtToken, encKey, hashKey, function(err, token) {
+      expect(err).to.exist;
+      expect(err.name).to.be.equal('EXPIRED_JWT_BY_CLIENT');
+      clock.restore();
+    });
+  });
+
 });
