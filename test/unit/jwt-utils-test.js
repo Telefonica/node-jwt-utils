@@ -418,7 +418,7 @@ describe('Jwt Utils Tests', function() {
 
   it('should fail when the JWT is expired', function(done) {
     var expiration = 10;
-    jwtUtils = jwt({expiration: expiration});
+    var jwtUtilsMod = jwt({expiration: expiration});
 
     var payload = {
           hola: 'caracola'
@@ -427,13 +427,14 @@ describe('Jwt Utils Tests', function() {
         key = '796f75722d7365637265742d6b657923796f75722d7365637265742d6b657923',
         hashKey = '796f75722d7365637265742d6b657923';
 
-    jwtUtils.buildJWTEncrypted(payload, {kid: kid}, key, hashKey, function(err, jwt) {
+    jwtUtilsMod.buildJWTEncrypted(payload, {kid: kid}, key, hashKey, function(err, jwt) {
       expect(err).to.not.exist;
       var clock = sinon.useFakeTimers(new Date().getTime());
       clock.tick((expiration + 1) * 1000);
       jwtUtils.readJWTEncrypted(jwt, key, hashKey, function(err, token) {
-        clock.restore();
+        expect(err).to.exist;
         expect(err).to.be.apiError(errors.EXPIRED_JWT());
+        clock.restore();
         done();
       });
     });
