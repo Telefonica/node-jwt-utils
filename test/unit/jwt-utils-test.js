@@ -418,7 +418,7 @@ describe('Jwt Utils Tests', function() {
 
   it('should fail when the JWT is expired', function(done) {
     var expiration = 10;
-    jwtUtils = jwt({expiration: expiration});
+    var jwtUtilsMod = jwt({expiration: expiration});
 
     var payload = {
           hola: 'caracola'
@@ -427,13 +427,14 @@ describe('Jwt Utils Tests', function() {
         key = '796f75722d7365637265742d6b657923796f75722d7365637265742d6b657923',
         hashKey = '796f75722d7365637265742d6b657923';
 
-    jwtUtils.buildJWTEncrypted(payload, {kid: kid}, key, hashKey, function(err, jwt) {
+    jwtUtilsMod.buildJWTEncrypted(payload, {kid: kid}, key, hashKey, function(err, jwt) {
       expect(err).to.not.exist;
       var clock = sinon.useFakeTimers(new Date().getTime());
       clock.tick((expiration + 1) * 1000);
       jwtUtils.readJWTEncrypted(jwt, key, hashKey, function(err, token) {
-        clock.restore();
+        expect(err).to.exist;
         expect(err).to.be.apiError(errors.EXPIRED_JWT());
+        clock.restore();
         done();
       });
     });
@@ -819,6 +820,28 @@ describe('Jwt Utils Tests', function() {
       expect(err).to.be.apiError(errors.ALGORITHM_NOT_SUPPORTED());
       expect(err.message).to.be.equal('Algorithm not supported. Invalid hash algorithm: HS2456');
 
+    });
+  });
+
+  it('should fail when client expired the jwt without taking into account the exp field', function() {
+    var jwtToken = 'eyJraWQiOiJraWQiLCJhbGciOiJkaXIiLCJlbmMiOiJBMjU' +
+        '2Q0JDLUhTNTEyIiwiY29yciI6ImNvcnIifQ..Xuaus8N7yqmojQFFFNgxL' +
+        'g.UCM5odV53W9NEaVvee7fCKb31B1C7wedJn02vapNOf2v3-dmKDaZxt2G' +
+        'nIDYK-TQ-XkiziRkRtZkjABFRNHPYw.FFduxvzrjIhWu8dQ3MMOVH11-tE' +
+        'BgE6955c4M9EO3fk';
+
+    var hashKey = '796f75722d7365637265742d6b657923796f75722d7365637265742d6b657923';
+    var encKey = '796f75722d7365637265742d6b657923796f75722d7365637265742d6b657923';
+
+    var clock = sinon.useFakeTimers(0, 'Date');
+    clock.tick((1443688542000 + 1) * 1000);
+
+    var jwtUtilsMod = jwt({expiration: 1});
+
+    jwtUtilsMod.readJWTEncrypted(jwtToken, encKey, hashKey, function(err, token) {
+      expect(err).to.exist;
+      expect(err.name).to.be.equal('NO_FRESH_JWT');
+      clock.restore();
     });
   });
 
