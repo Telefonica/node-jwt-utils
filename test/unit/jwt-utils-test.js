@@ -840,7 +840,7 @@ describe('Jwt Utils Tests', function() {
 
     jwtUtilsMod.readJWTEncrypted(jwtToken, encKey, hashKey, function(err, token) {
       expect(err).to.exist;
-      expect(err.name).to.be.equal('EXPIRED_JWT_BY_CLIENT');
+      expect(err.name).to.be.equal('NO_FRESH_JWT');
       clock.restore();
     });
   });

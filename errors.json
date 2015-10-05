@@ -266,6 +266,30 @@
         }
       },
       {
+        "type": "MISSING_IAT",
+        "fields": [
+          {
+            "key": "message",
+            "value": "iat field is missing in the JWT payload.",
+            "doc": null
+          },
+          {
+            "key": "level",
+            "value": "info",
+            "doc": null
+          },
+          {
+            "key": "namespace",
+            "value": "JWTPAYLOAD",
+            "doc": null
+          }
+        ],
+        "doc": {
+          "description": "Iat is required.",
+          "tags": []
+        }
+      },
+      {
         "type": "INVALID_EXP",
         "fields": [
           {
@@ -338,11 +362,11 @@
         }
       },
       {
-        "type": "EXPIRED_JWT_BY_CLIENT",
+        "type": "NO_FRESH_JWT",
         "fields": [
           {
             "key": "message",
-            "value": "JWT has discarded by client expiration.",
+            "value": "JWT has discarded by client. No fresh JWT.",
             "doc": null
           },
           {
