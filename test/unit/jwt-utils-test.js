@@ -487,18 +487,6 @@ describe('Jwt Utils Tests', function() {
     });
   });
 
-  it('should fail to read an unencrypted token without kid', function() {
-    var jwtToken = 'eyJhbGciOiJIUzI1NiJ9.eyJpc' +
-        '3MiOiIiLCJqdGkiOiIiLCJpYXQiOjEzNzQwNzg4' +
-        'NzF9.khagsjdgjas';
-
-    var hashKey = '11111111111111111111111111111111';
-    jwtUtils.readJWT(jwtToken, hashKey, function(err, token) {
-      expect(err).to.be.apiError(errors.MISSING_REQUIRED_KID());
-      expect(token).not.to.exist;
-    });
-  });
-
   it('should fail to read an unencrypted token without a valid algorithm', function() {
     var jwtToken = 'eyJhbGciOiJIUzI1NyIsICJraWQiOiJteUtpZCJ9.eyJpc' +
         '3MiOiIiLCJqdGkiOiIiLCJpYXQiOjEzNzQwNzg4' +
