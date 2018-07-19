@@ -833,4 +833,41 @@ describe('Jwt Utils Tests', function() {
     });
   });
 
+  it('should not check expiry with config.expiration set to 0', function() {
+    var jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.Gfx6VO9tcxwk6xqx9yYzSfebfeakZp5JYIgP_edcw_A';
+    var hashKey = '796f75722d3235362d6269742d736563726574';
+
+    var jwtUtilsMod = jwt({expiration: 0});
+
+    jwtUtilsMod.readJWT(jwtToken, hashKey, function(err, token) {
+      expect(err).to.not.exist;
+    });
+  });
+
+  it('should check expiry with config.expiration set to a value other than 0', function() {
+    var jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIn0.Gfx6VO9tcxwk6xqx9yYzSfebfeakZp5JYIgP_edcw_A';
+    var hashKey = '796f75722d3235362d6269742d736563726574';
+
+    var jwtUtilsMod = jwt({expiration: 1});
+
+    jwtUtilsMod.readJWT(jwtToken, hashKey, function(err, token) {
+      expect(err).to.exist;
+    });
+  });
+
+  it('should check iat and exp if present, even with config.expiration set to 0', function() {
+    var jwtToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIwLCJleHAiOjE1MTYyMzkwMjF9.H_PgIMtvx7m9-vwIc3JBL6FBUEowa9MSYg7bx-BPmBQ';
+    var hashKey = '796f75722d3235362d6269742d736563726574';
+
+    var clock = sinon.useFakeTimers(0, 'Date');
+    clock.tick((1516239022000 + 1) * 1000);
+
+    var jwtUtilsMod = jwt({expiration: 0});
+
+    jwtUtilsMod.readJWT(jwtToken, hashKey, function(err, token) {
+      expect(err).to.exist;
+      clock.restore();
+    });
+  });
+
 });
