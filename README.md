@@ -70,7 +70,7 @@ jwt.readJWTHeader(token, function(err, header) {
 
 ## Configuration
 
-* expiration: Expiration time in seconds to generate exp field in token.
+* expiration: Expiration time in seconds to generate exp field in token (this functionality can be disabled by setting the value to 0).
 * futureTolerance: Tolerance seconds to find out if a jwt comes from the future or not.
 
 ## Development information
