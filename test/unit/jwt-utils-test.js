@@ -11,6 +11,79 @@ describe('Jwt Utils Tests', function() {
   beforeEach(function() {
     jwtUtils = jwt();
   });
+  it('should return a read error of a JWT signed by privateKey and verified with publicKey2', function() {
+    var payload = {
+          myField: 'myValue'
+        },
+        header = {
+          kid: 'kid',
+          alg: 'RS256'
+        };
+    var privateKey = fs.readFileSync(__dirname + '/sampleKeys/privateKey.pem');
+    var publicKey = fs.readFileSync(__dirname + '/sampleKeys/publicKey2.pem');
+    jwtUtils.buildJWT(payload, header, privateKey, function(err, result) {
+      expect(err).to.not.exist;
+      expect(result).to.exist;
+      jwtUtils.readJWT(result, publicKey, function(err, decodedResult) {
+        expect(err).to.exist;
+        expect(err).to.be.apiError(errors.WRONG_TOKEN_SIGNATURE());
+        expect(decodedResult).to.not.exist;
+      });
+    });
+  });
+
+  it('should generate and read a JWT signed using RS256, privKey 1024', function() {
+    var payload = {
+          myField: 'myValue'
+        },
+        header = {
+            kid: 'kid',
+            alg: 'RS256'
+        };
+
+    var privateKey = fs.readFileSync(__dirname + '/sampleKeys/privateKey.pem');
+    var publicKey = fs.readFileSync(__dirname + '/sampleKeys/publicKey.pem');
+    jwtUtils.buildJWT(payload, header, privateKey, function(err, result) {
+      expect(err).to.not.exist;
+      expect(result).to.exist;
+      jwtUtils.readJWT(result, publicKey, function(err, decodedResult) {
+        expect(err).to.not.exist;
+        expect(decodedResult).to.exist;
+        expect(decodedResult.header).to.exist;
+        expect(decodedResult.header.alg).to.be.equal('RS256');
+        expect(decodedResult.header.kid).to.be.equal('kid');
+        expect(decodedResult.payload).to.exist;
+        expect(decodedResult.payload.iat).to.exist;
+        expect(decodedResult.payload.myField).to.be.equal('myValue');
+      });
+    });
+  });
+
+  it('should generate and read a JWT signed using RS256, privKey 512', function() {
+    var payload = {
+          myField: 'myValue'
+        },
+        header = {
+          kid: 'kid',
+          alg: 'RS256'
+        };
+    var privateKey = fs.readFileSync(__dirname + '/sampleKeys/privateKey2.pem');
+    var publicKey = fs.readFileSync(__dirname + '/sampleKeys/publicKey2.pem');
+    jwtUtils.buildJWT(payload, header, privateKey, function(err, result) {
+      expect(err).to.not.exist;
+      expect(result).to.exist;
+      jwtUtils.readJWT(result, publicKey, function(err, decodedResult) {
+        expect(err).to.not.exist;
+        expect(decodedResult).to.exist;
+        expect(decodedResult.header).to.exist;
+        expect(decodedResult.header.alg).to.be.equal('RS256');
+        expect(decodedResult.header.kid).to.be.equal('kid');
+        expect(decodedResult.payload).to.exist;
+        expect(decodedResult.payload.iat).to.exist;
+        expect(decodedResult.payload.myField).to.be.equal('myValue');
+      });
+    });
+  });
 
   it('should be error when header is null', function() {
     jwtUtils.buildJWT({'payload': 'payloadData'}, null, 'hashKey', function(err, token) {
@@ -240,7 +313,7 @@ describe('Jwt Utils Tests', function() {
       expect(jwt).to.be.ok;
       var segments = jwt.split('.');
       expect(segments[1]).to.be.equal('');
-      var authTagBuff = new Buffer(segments[4], 'base64');
+      var authTagBuff = Buffer.from(segments[4], 'base64');
       expect(authTagBuff.length).to.be.equal(16);
       expect(err).to.not.exist;
       jwtUtils.readJWTEncrypted(jwt, key, hashKey, function(err, token) {
@@ -526,6 +599,7 @@ describe('Jwt Utils Tests', function() {
     });
   });
 
+
   it('should read the header of an unencrypted JWT', function() {
     var payload = {},
         kid = 'your-client-id',
@@ -539,87 +613,8 @@ describe('Jwt Utils Tests', function() {
     });
   });
 
-  it('should fail while reading the header of an invalid JWT', function() {
-    var jwtToken = 'wrongheader.wrongpayload.wrongsignature';
-    jwtUtils.readJWTHeader(jwtToken, function(err, header) {
-      expect(err).to.be.apiError(errors.INVALID_HEADER());
-      expect(header).not.to.exist;
-    });
-  });
 
-  it('should generate and read a JWT signed using RS256, privKey 1024', function() {
-    var payload = {
-          myField: 'myValue'
-        },
-        header = {
-            kid: 'kid',
-            alg: 'RS256'
-        };
 
-    var privateKey = fs.readFileSync(__dirname + '/sampleKeys/privateKey.pem');
-    var publicKey = fs.readFileSync(__dirname + '/sampleKeys/publicKey.pem');
-    jwtUtils.buildJWT(payload, header, privateKey, function(err, result) {
-      expect(err).to.not.exist;
-      expect(result).to.exist;
-      jwtUtils.readJWT(result, publicKey, function(err, decodedResult) {
-        expect(err).to.not.exist;
-        expect(decodedResult).to.exist;
-        expect(decodedResult.header).to.exist;
-        expect(decodedResult.header.alg).to.be.equal('RS256');
-        expect(decodedResult.header.kid).to.be.equal('kid');
-        expect(decodedResult.payload).to.exist;
-        expect(decodedResult.payload.iat).to.exist;
-        expect(decodedResult.payload.myField).to.be.equal('myValue');
-      });
-    });
-  });
-
-  it('should generate and read a JWT signed using RS256, privKey 512', function() {
-    var payload = {
-          myField: 'myValue'
-        },
-        header = {
-          kid: 'kid',
-          alg: 'RS256'
-        };
-    var privateKey = fs.readFileSync(__dirname + '/sampleKeys/privateKey2.pem');
-    var publicKey = fs.readFileSync(__dirname + '/sampleKeys/publicKey2.pem');
-    jwtUtils.buildJWT(payload, header, privateKey, function(err, result) {
-      expect(err).to.not.exist;
-      expect(result).to.exist;
-      jwtUtils.readJWT(result, publicKey, function(err, decodedResult) {
-        expect(err).to.not.exist;
-        expect(decodedResult).to.exist;
-        expect(decodedResult.header).to.exist;
-        expect(decodedResult.header.alg).to.be.equal('RS256');
-        expect(decodedResult.header.kid).to.be.equal('kid');
-        expect(decodedResult.payload).to.exist;
-        expect(decodedResult.payload.iat).to.exist;
-        expect(decodedResult.payload.myField).to.be.equal('myValue');
-      });
-    });
-  });
-
-  it('should return a read error of a JWT signed by privateKey and verified with publicKey2', function() {
-    var payload = {
-          myField: 'myValue'
-        },
-        header = {
-          kid: 'kid',
-          alg: 'RS256'
-        };
-    var privateKey = fs.readFileSync(__dirname + '/sampleKeys/privateKey.pem');
-    var publicKey = fs.readFileSync(__dirname + '/sampleKeys/publicKey2.pem');
-    jwtUtils.buildJWT(payload, header, privateKey, function(err, result) {
-      expect(err).to.not.exist;
-      expect(result).to.exist;
-      jwtUtils.readJWT(result, publicKey, function(err, decodedResult) {
-        expect(err).to.exist;
-        expect(err).to.be.apiError(errors.WRONG_TOKEN_SIGNATURE());
-        expect(decodedResult).to.not.exist;
-      });
-    });
-  });
 
   it('should encrypt and decrypt with A256CBC-HS512', function() {
     var payload = {
@@ -636,7 +631,7 @@ describe('Jwt Utils Tests', function() {
       expect(jwt).to.exist;
       var segments = jwt.split('.');
       expect(segments[1]).to.be.equal('');
-      var authTagBuff = new Buffer(segments[4], 'base64');
+      var authTagBuff = Buffer.from(segments[4], 'base64');
       expect(authTagBuff.length).to.be.equal(32);
       expect(error).to.not.exist;
       jwtUtils.readJWTEncrypted(jwt, key, key, function(err, token) {
@@ -670,7 +665,7 @@ describe('Jwt Utils Tests', function() {
       expect(jwt).to.exist;
       var segments = jwt.split('.');
       expect(segments[1]).to.be.equal('');
-      var authTagBuff = new Buffer(segments[4], 'base64');
+      var authTagBuff = Buffer.from(segments[4], 'base64');
       expect(authTagBuff.length).to.be.equal(32);
       expect(error).to.not.exist;
       jwtUtils.readJWTEncrypted(jwt, key, key, function(err, token) {
@@ -715,7 +710,7 @@ describe('Jwt Utils Tests', function() {
       expect(jwt).to.exist;
       var segments = jwt.split('.');
       expect(segments[1]).to.be.equal('');
-      var authTagBuff = new Buffer(segments[4], 'base64');
+      var authTagBuff = Buffer.from(segments[4], 'base64');
       expect(authTagBuff.length).to.be.equal(32);
       expect(error).to.not.exist;
       jwtUtils.readJWTEncrypted(jwt, key, key, function(err, token) {
@@ -760,7 +755,7 @@ describe('Jwt Utils Tests', function() {
       expect(jwt).to.exist;
       var segments = jwt.split('.');
       expect(segments[1]).to.be.equal('');
-      var authTagBuff = new Buffer(segments[4], 'base64');
+      var authTagBuff = Buffer.from(segments[4], 'base64');
       expect(authTagBuff.length).to.be.equal(32);
       expect(error).to.not.exist;
       jwtUtils.readJWTEncrypted(jwt, key, key, function(err, token) {
@@ -869,5 +864,15 @@ describe('Jwt Utils Tests', function() {
       clock.restore();
     });
   });
+
+  it('should fail while reading the header of an invalid JWT', function() {
+    var jwtToken = 'wrongheader.wrongpayload.wrongsignature';
+    jwtUtils.readJWTHeader(jwtToken, function(err, header) {
+      expect(err).to.be.apiError(errors.INVALID_HEADER());
+      expect(header).not.to.exist;
+    });
+  });
+
+
 
 });

@@ -7,11 +7,11 @@ chai.use(sinonChai);
 
 global.expect = chai.expect;
 
-beforeEach(function(){
-  global.sinon = sinon.sandbox.create();
+beforeEach(function() {
+  global.sinon = sinon.createSandbox();
 });
 
-afterEach(function(){
+afterEach(function() {
   global.sinon.restore();
 });
 

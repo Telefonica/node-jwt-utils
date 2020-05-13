@@ -4,8 +4,6 @@ jwt-utils
 JSON Web Tokens (JWT) utils.
 
 [![npm version](https://badge.fury.io/js/jwt-utils.svg)](http://badge.fury.io/js/jwt-utils)
-[![Build Status](https://travis-ci.org/telefonica/node-jwt-utils.svg)](https://travis-ci.org/telefonica/node-jwt-utils)
-[![Coverage Status](https://img.shields.io/coveralls/telefonica/node-jwt-utils.svg)](https://coveralls.io/r/telefonica/node-jwt-utils)
 
 This module is able to parse and generate both encrypted and unencrypted JWT tokens.
 

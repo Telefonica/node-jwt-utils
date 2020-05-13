@@ -1,4 +1,5 @@
 {
+  "extends": "google",
   "env": {
     "node": true
   },
@@ -7,6 +8,20 @@
     "quotes": [2, "single"],
     "no-underscore-dangle": 0,
     "new-cap": [1, {"capIsNew": false}],
-    "no-mixed-requires": [1, true]
+    "no-mixed-requires": [1, true],
+    "require-jsdoc": ["error", {
+        "require": {
+            "FunctionDeclaration": false,
+            "MethodDefinition": false,
+            "ClassDeclaration": false,
+            "ArrowFunctionExpression": false,
+            "FunctionExpression": false
+        }
+    }],
+    "valid-jsdoc": 0,
+    "no-var": 0,
+    "one-var": 0,
+    "max-len": ["error", { "code": 120 }],
+    "comma-dangle": ["error", "never"]
   }
 }

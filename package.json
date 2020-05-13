@@ -13,14 +13,13 @@
   ],
   "main": "lib/jwt-utils",
   "engines": {
-    "node": ">= 0.10.26"
+    "node": ">= 8.3.0"
   },
   "scripts": {
     "test": "mocha -R spec test/environment.js test/unit/*-test.js",
     "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha -- -R dot test/environment.js test/unit/*-test.js",
-    "lint": "jscs lib && eslint lib",
-    "prepublish": "npm run test && npm run lint",
-    "travis": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec test/environment.js test/*-test.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "lint": "eslint lib",
+    "prepublish": "npm run test && npm run lint"
   },
   "repository": {
     "type": "git",
@@ -32,21 +31,19 @@
     "tdaf"
   ],
   "devDependencies": {
-    "chai": "^3.0.0",
-    "coveralls": "^2.11.2",
-    "istanbul": "^0.3.16",
-    "mocha": "^2.2.5",
-    "proxyquire": "^1.5.0",
-    "should": "^7.0.1",
-    "sinon": "~1.15.3",
-    "sinon-chai": "^2.8.0",
-    "supertest": "^1.0.1",
-    "xunit-file": "^0.0.6",
-    "jscs": "^1.13.1",
-    "eslint": "^0.23.0"
+    "chai": "^4.2.0",
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^7.1.2",
+    "proxyquire": "^2.1.3",
+    "sinon": "~9.0.2",
+    "sinon-chai": "^3.5.0",
+    "supertest": "^4.0.2",
+    "xunit-file": "^1.0.0"
   },
   "dependencies": {
-    "debug": "^2.2.0",
+    "debug": "^4.1.1",
     "therror": "^0.2.0",
     "jwa": "^1.0.0",
     "underscore": "^1.8.3"
